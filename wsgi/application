@@ -1,0 +1,24 @@
+#!/usr/bin/python
+import os, sys
+
+here = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(here, 'tg2app'))
+virtenv = os.environ.get('APPDIR', '') + '/virtenv/'
+os.environ['PYTHON_EGG_CACHE'] = os.path.join(virtenv, 'lib/python2.6/site-packages')
+virtualenv = os.path.join(virtenv, 'bin/activate_this.py')
+try:
+    execfile(virtualenv, dict(__file__=virtualenv))
+except IOError:
+    pass
+
+from paste.deploy import loadapp
+application = loadapp('config:production.ini', relative_to=os.path.join(here, 'tg2app'))
+
+#
+# Below for testing only
+#
+if __name__ == '__main__':
+    from wsgiref.simple_server import make_server
+    httpd = make_server('localhost', 8051, application)
+    # Wait for a single request, serve it and quit.
+    httpd.handle_request()
