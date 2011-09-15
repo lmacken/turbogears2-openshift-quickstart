@@ -3,3 +3,5 @@
 *.egg*
 *.db*
 *.swp
+wsgi/tg2app/build
+wsgi/tg2app/dist
