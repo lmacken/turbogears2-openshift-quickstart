@@ -3,6 +3,8 @@ import os, sys
 
 here = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(here, 'tg2app'))
+config = os.path.join(here, 'tg2app', 'production.ini')
+
 virtenv = os.environ.get('APPDIR', '') + '/virtenv/'
 os.environ['PYTHON_EGG_CACHE'] = os.path.join(virtenv, 'lib/python2.6/site-packages')
 virtualenv = os.path.join(virtenv, 'bin/activate_this.py')
@@ -11,8 +13,11 @@ try:
 except IOError:
     pass
 
+import logging.config
+logging.config.fileConfig(config)
+
 from paste.deploy import loadapp
-application = loadapp('config:production.ini', relative_to=os.path.join(here, 'tg2app'))
+application = loadapp('config:' + config)
 
 #
 # Below for testing only
