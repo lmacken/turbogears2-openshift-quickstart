@@ -3,6 +3,7 @@
 
 set -e
 export PATH=$PATH:~/$OPENSHIFT_APP_NAME/virtenv/bin/
+export PYTHON_EGG_CACHE=$OPENSHIFT_APP_NAME/virtenv/lib/python2.6/site-packages
 
 source ~/$OPENSHIFT_APP_NAME/virtenv/bin/activate
 
