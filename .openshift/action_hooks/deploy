@@ -19,6 +19,8 @@ then
     exit 5
 fi
 
+cd $OPENSHIFT_REPO_DIR/wsgi/tg2app
+
 # Initialize our database once
 if [ ! -e $OPENSHIFT_DATA_DIR/DB_INITIALIZED ]; then
     echo "Initializing database"
