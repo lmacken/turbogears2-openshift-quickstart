@@ -7,7 +7,7 @@
 #
 #
 
-import sys
+import sys, os
 
 try:
     from setuptools import setup, find_packages
@@ -24,15 +24,8 @@ testpkgs=['WebTest >= 1.2.3',
                ]
 if sys.version_info[:2] == (2,4):
     testpkgs.extend(['hashlib', 'pysqlite'])
-
-setup(
-    name='tg2app',
-    version='0.1',
-    description='',
-    author='',
-    author_email='',
-    #url='',
-    install_requires=[
+    
+requires = [
         "Pylons==1.0",
         "WebOb==1.0.8",
         "tg.devtools",
@@ -51,8 +44,19 @@ setup(
         "repoze.who==1.0.19",
         "tgext.admin >= 0.3.9",
         "tw.forms",
-        "mysql-python",
-        ],
+        ]
+        
+if os.environ.get('OPENSHIFT_APP_NAME'):
+    requires.append("mysql-python")
+
+setup(
+    name='tg2app',
+    version='0.1',
+    description='',
+    author='',
+    author_email='',
+    #url='',
+    install_requires=requires,
     setup_requires=["PasteScript >= 1.7"],
     paster_plugins=['PasteScript', 'Pylons', 'TurboGears2', 'tg.devtools'],
     packages=find_packages(exclude=['ez_setup']),
