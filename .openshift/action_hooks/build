@@ -1,22 +1,11 @@
 #!/bin/bash
-# TurboGears OpenShift post-deploy pre-start configuration
+# TurboGears OpenShift post-stop build configuration
 
 set -e
 export PATH=$PATH:~/$OPENSHIFT_APP_NAME/virtenv/bin/
 
 source ~/$OPENSHIFT_APP_NAME/virtenv/bin/activate
 
-if [ -z $OPENSHIFT_DB_HOST ]
-then
-    echo 1>&2
-    echo 1>&2
-    echo "Could not find mysql database.  Please run:" 1>&2
-    echo "rhc-ctl-app -a $OPENSHIFT_APP_NAME -e add-mysql-5.1" 1>&2
-    echo "then make a sample commit (add whitespace somewhere) and re-push" 1>&2
-    echo 1>&2
-    echo 1>&2
-    exit 5
-fi
 
 # Have apache serve up all of our static resources
 echo "Symlinking static resources from tg2app/public"
@@ -26,16 +15,3 @@ cd $OPENSHIFT_REPO_DIR/wsgi/tg2app
 
 # We're not doing 'install' to save space.
 python setup.py develop
-
-# Initialize our database once
-if [ ! -e $OPENSHIFT_DATA_DIR/DB_INITIALIZED ]; then
-    echo "Initializing database"
-    paster setup-app production.ini
-    touch $OPENSHIFT_DATA_DIR/DB_INITIALIZED
-fi
-
-# Run the test suite automatically
-# At the moment failure does not prevent the code from getting deployed
-echo "Running the test suite"
-unset OPENSHIFT_APP_NAME
-nosetests -q
