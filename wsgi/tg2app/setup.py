@@ -24,10 +24,10 @@ testpkgs=['WebTest >= 1.2.3',
                ]
 if sys.version_info[:2] == (2,4):
     testpkgs.extend(['hashlib', 'pysqlite'])
-    
+
 requires = [
-        "Pylons==1.0",
-        "WebOb==1.0.8",
+        #"Pylons==1.0",
+        #"WebOb==1.0.8",
         "tg.devtools",
         "TurboGears2 >= 2.1.2",
         "Mako",
